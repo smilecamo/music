@@ -34,16 +34,9 @@ export default {
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
-
   .recommend
     position: fixed
     width: 100%
     top: 88px
     bottom: 0
-    .recommend-content
-      height: 0
-      padding-bottom: 30%
-      .slider
-        height: 0
-        padding-bottom: 30%
 </style>

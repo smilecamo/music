@@ -1,13 +1,13 @@
 <template>
   <div class="slider">
-  <swiper :options="swiperOption" ref="mySwiper">
-  <swiper-slide v-for="(item, index) of recommends" :key='index.id'>
-    <a :href="item.linkUrl">
-      <img :src="item.picUrl" alt="">
-    </a>
-  </swiper-slide>
-  <div class="swiper-scrollbar"   slot="scrollbar"></div>
-  </swiper>
+    <swiper :options="swiperOption" ref="mySwiper">
+      <swiper-slide v-for="(item, index) of recommends" :key='index.id'>
+        <!-- <a :href="item.linkUrl"> -->
+          <img :src="item.picUrl" alt="">
+        <!-- </a> -->
+      </swiper-slide>
+      <div class="swiper-pagination"  slot="pagination"></div>
+    </swiper>
   </div>
 </template>
 
@@ -23,7 +23,9 @@ export default {
     return {
       recommends: [],
       swiperOption: {
-        notNextTick: true
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        loop: true
       }
     }
   },
@@ -43,4 +45,17 @@ export default {
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
 @import 'swiper/dist/css/swiper.css';
+.slider >>> .swiper-pagination-bullet-active
+  background #fff
+.slider >>> .swiper-pagination-bullet
+  width 6px
+  height 6px
+.slider
+  overflow: hidden;
+  width: 100%;
+  height: 0;
+  padding-bottom: 40%;
+  background: #eee;
+  img
+    width 100%
 </style>
