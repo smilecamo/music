@@ -21,25 +21,35 @@ export default {
   },
   data () {
     return {
-      recommends: [],
+      recommends: [
+        {
+          picUrl: 'http://y.gtimg.cn/music/common/upload/MUSIC_FOCUS/305119.jpg'
+        },
+        {
+          picUrl: 'http://y.gtimg.cn/music/common/upload/MUSIC_FOCUS/306834.jpg'
+        },
+        {
+          picUrl: 'http://y.gtimg.cn/music/common/upload/MUSIC_FOCUS/306957.jpg'
+        }
+      ],
       swiperOption: {
         pagination: '.swiper-pagination',
         paginationClickable: true,
         loop: true
       }
     }
-  },
-  created () {
-    this._getimg()
-  },
-  methods: {
-    _getimg () {
-      this.axios.get('/api/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg?g_tk=5381&uin=0&format=json&inCharset=utf-8&outCharset=utf-8&notice=0&platform=h5&needNewCode=1&_=1531811134627')
-        .then((response) => {
-          this.recommends = response.data.data.slider
-        })
-    }
   }
+  // created () {
+  //   this._getimg()
+  // },
+  // methods: {
+  //   _getimg () {
+  //     this.axios.get('https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg?g_tk=5381&uin=0&format=json&inCharset=utf-8&outCharset=utf-8&notice=0&platform=h5&needNewCode=1&_=1531811134627')
+  //       .then((response) => {
+  //         this.recommends = response.data.data.slider
+  //       })
+  //   }
+  // }
 }
 </script>
 

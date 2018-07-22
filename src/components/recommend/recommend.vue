@@ -3,11 +3,13 @@
     <div class="recommend-content">
       <slider></slider>
     </div>
+    <song-sheet></song-sheet>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import Slider from 'base/slider/slider.vue'
+import SongSheet from 'components/recommend/SongSheet'
 export default {
   name: 'Recommend',
   data () {
@@ -16,18 +18,8 @@ export default {
     }
   },
   components: {
-    Slider
-  },
-  created () {
-    this._getimg()
-  },
-  methods: {
-    _getimg () {
-      this.axios.get('/api/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg?g_tk=5381&uin=0&format=json&inCharset=utf-8&outCharset=utf-8&notice=0&platform=h5&needNewCode=1&_=1531811134627')
-        .then((response) => {
-          this.recommends = response.data.data.slider
-        })
-    }
+    Slider,
+    SongSheet
   }
 }
 </script>
