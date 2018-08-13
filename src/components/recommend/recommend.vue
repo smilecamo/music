@@ -26,7 +26,6 @@ export default {
         .then(res => {
           if (res.status === 200) {
             this.list = res.data.banners
-            console.log(this.list)
           }
         })
     }
@@ -41,5 +40,14 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-
+  @import "~common/stylus/variable"
+  .recommend
+    position: fixed
+    width: 100%
+    top: 88px
+    bottom: 0
+    .slider-wrapper
+      position: relative
+      width: 100%
+      overflow: hidden
 </style>

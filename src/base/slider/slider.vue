@@ -3,6 +3,13 @@
     <div class="slider-group" ref="sliderGroup">
       <slot></slot>
     </div>
+    <div class="dots">
+      <span class="dot"
+            v-for="(item,index) of dots"
+            :key="index"
+            :class="{active:currentPageIndex === index}"
+            ></span>
+    </div>
   </div>
 </template>
 
@@ -12,7 +19,8 @@ import BScroll from 'better-scroll'
 export default {
   data() {
     return {
-      dots: []
+      dots: [], // 小圆点
+      currentPageIndex: 0 // 当前第几页处于  添加经过的时候样式
     }
   },
   props: {
@@ -26,7 +34,7 @@ export default {
     },
     interval: {
       type: Number,
-      dafault: 4000
+      dafault: 2000
     }
   },
   mounted() {
@@ -34,6 +42,9 @@ export default {
       this._setSliderWidth()
       this._initDots()
       this._initSlider()
+      if (this.autoPlay) {
+        this._play()
+      }
     }, 20)
   },
   methods: {
@@ -42,7 +53,6 @@ export default {
       let width = 0
       // 获取当前宽度
       let sliderWidth = this.$refs.slider.clientWidth
-      console.log(`sliderwidth ${sliderWidth}`)
       for (let i = 0; i < this.children.length; i++) {
         let child = this.children[i]
         // 给子元素加类名
@@ -63,15 +73,30 @@ export default {
         scrollX: true,
         scrollY: false,
         momentum: false,
-        snap: true,
-        loop: this.loop,
-        snapThreshold: 0.3,
-        snapSpeed: 400,
+        snap: {
+          loop: this.loop,
+          threshold: 0.3,
+          speed: 2000
+        },
         click: true
+      })
+      this.slider.on('scrollEnd', () => {
+        let pageIndex = this.slider.getCurrentPage().pageX
+        console.log(pageIndex)
+        this.currentPageIndex = pageIndex
+        if (this.autoPlay) {
+          clearTimeout(this.timer)
+          this._play()
+        }
       })
     },
     _initDots() {
-
+      this.dots = new Array(this.children.length)
+    },
+    _play() {
+      this.timer = setTimeout(() => {
+        this.slider.next()
+      }, this.interval)
     }
   }
 }
@@ -98,4 +123,22 @@ export default {
         img
           display block
           width 100%
+  .dots
+    position: absolute
+    right: 0
+    left: 0
+    bottom: 12px
+    text-align: center
+    font-size: 0
+    .dot
+      display: inline-block
+      margin: 0 4px
+      width: 8px
+      height: 8px
+      border-radius: 50%
+      background: $color-text-l
+      &.active
+        width: 20px
+        border-radius: 5px
+        background: $color-text-ll
 </style>
