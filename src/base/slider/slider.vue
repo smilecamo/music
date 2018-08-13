@@ -46,9 +46,16 @@ export default {
         this._play()
       }
     }, 20)
+    window.addEventListener('resize', () => {
+      if (!this.slider) {
+        return
+      }
+      this._setSliderWidth(true)
+      this.slider.refresh()
+    })
   },
   methods: {
-    _setSliderWidth() {
+    _setSliderWidth(isResize) {
       this.children = this.$refs.sliderGroup.children
       let width = 0
       // 获取当前宽度
@@ -63,7 +70,7 @@ export default {
         width += sliderWidth
       }
       // 如果开启滚动,两边需要各克隆一个图片大小
-      if (this.loop) {
+      if (this.loop && !isResize) {
         width += 2 * sliderWidth
       }
       this.$refs.sliderGroup.style.width = width + 'px'
@@ -82,7 +89,6 @@ export default {
       })
       this.slider.on('scrollEnd', () => {
         let pageIndex = this.slider.getCurrentPage().pageX
-        console.log(pageIndex)
         this.currentPageIndex = pageIndex
         if (this.autoPlay) {
           clearTimeout(this.timer)
