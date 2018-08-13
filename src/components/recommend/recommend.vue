@@ -1,41 +1,45 @@
 <template>
-  <div class="recommend wrapper" ref='wrapper'>
-    <div class="recommend-content">
-      <slider></slider>
-      <song-sheet></song-sheet>
+  <div class="recommend">
+    <div v-if="list.length" class="slider-wrapper">
+      <slider>
+        <div v-for="item of list" :key="item.url">
+          <a>
+            <img :src="item.picUrl" alt="banner">
+          </a>
+        </div>
+      </slider>
     </div>
   </div>
 </template>
 
-<script type="text/ecmascript-6">
-import BScroll from 'better-scroll'
-import Slider from 'base/slider/slider.vue'
-import SongSheet from 'components/recommend/SongSheet'
+<script>
+import Slider from 'base/slider/slider'
 export default {
-  name: 'Recommend',
-  data () {
+  data() {
     return {
-      recommends: []
+      list: []
     }
   },
-  components: {
-    Slider,
-    SongSheet
+  methods: {
+    get() {
+      this.axios.get('/api/banner')
+        .then(res => {
+          if (res.status === 200) {
+            this.list = res.data.banners
+            console.log(this.list)
+          }
+        })
+    }
   },
-  created () {
-    this.$nextTick(() => {
-      this.scroll = new BScroll(this.$refs.wrapper, {})
-    })
+  created() {
+    this.get()
+  },
+  components: {
+    Slider
   }
 }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
-  @import "~common/stylus/variable"
-  .recommend
-    position: fixed
-    width: 100%
-    top: 88px
-    bottom: 0
-    overflow:hidden
+<style lang="stylus" scoped>
+
 </style>

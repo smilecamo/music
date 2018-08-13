@@ -1,72 +1,101 @@
 <template>
-  <div class="slider">
-    <swiper :options="swiperOption" ref="mySwiper">
-      <swiper-slide v-for="(item, index) of recommends" :key='index.id'>
-        <!-- <a :href="item.linkUrl"> -->
-          <img :src="item.picUrl" alt="">
-        <!-- </a> -->
-      </swiper-slide>
-      <div class="swiper-pagination"  slot="pagination"></div>
-    </swiper>
+  <div class="slider" ref="slider">
+    <div class="slider-group" ref="sliderGroup">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
-<script type="text/ecmascript-6">
-import { swiper, swiperSlide } from 'vue-awesome-swiper'
+<script>
+import { addClass } from 'common/js/dom'
+import BScroll from 'better-scroll'
 export default {
-  name: 'Slider',
-  components: {
-    swiper,
-    swiperSlide
-  },
-  data () {
+  data() {
     return {
-      recommends: [
-        {
-          picUrl: 'http://y.gtimg.cn/music/common/upload/MUSIC_FOCUS/305119.jpg'
-        },
-        {
-          picUrl: 'http://y.gtimg.cn/music/common/upload/MUSIC_FOCUS/306834.jpg'
-        },
-        {
-          picUrl: 'http://y.gtimg.cn/music/common/upload/MUSIC_FOCUS/306957.jpg'
-        }
-      ],
-      swiperOption: {
-        pagination: '.swiper-pagination',
-        paginationClickable: true,
-        loop: true,
-        autoplay: 10000
+      dots: []
+    }
+  },
+  props: {
+    loop: {
+      type: Boolean,
+      default: true
+    },
+    autoPlay: {
+      type: Boolean,
+      default: true
+    },
+    interval: {
+      type: Number,
+      dafault: 4000
+    }
+  },
+  mounted() {
+    setTimeout(() => {
+      this._setSliderWidth()
+      this._initDots()
+      this._initSlider()
+    }, 20)
+  },
+  methods: {
+    _setSliderWidth() {
+      this.children = this.$refs.sliderGroup.children
+      let width = 0
+      // 获取当前宽度
+      let sliderWidth = this.$refs.slider.clientWidth
+      console.log(`sliderwidth ${sliderWidth}`)
+      for (let i = 0; i < this.children.length; i++) {
+        let child = this.children[i]
+        // 给子元素加类名
+        addClass(child, 'slider-item')
+        // 设置单个子元素宽度
+        child.style.width = sliderWidth + 'px'
+        // 轮播框大小
+        width += sliderWidth
       }
+      // 如果开启滚动,两边需要各克隆一个图片大小
+      if (this.loop) {
+        width += 2 * sliderWidth
+      }
+      this.$refs.sliderGroup.style.width = width + 'px'
+    },
+    _initSlider() {
+      this.slider = new BScroll(this.$refs.slider, {
+        scrollX: true,
+        scrollY: false,
+        momentum: false,
+        snap: true,
+        loop: this.loop,
+        snapThreshold: 0.3,
+        snapSpeed: 400,
+        click: true
+      })
+    },
+    _initDots() {
+
     }
   }
-  // created () {
-  //   this._getimg()
-  // },
-  // methods: {
-  //   _getimg () {
-  //     this.axios.get('https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg?g_tk=5381&uin=0&format=json&inCharset=utf-8&outCharset=utf-8&notice=0&platform=h5&needNewCode=1&_=1531811134627')
-  //       .then((response) => {
-  //         this.recommends = response.data.data.slider
-  //       })
-  //   }
-  // }
 }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
-@import 'swiper/dist/css/swiper.css';
-.slider >>> .swiper-pagination-bullet-active
-  background #fff
-.slider >>> .swiper-pagination-bullet
-  width 6px
-  height 6px
+<style lang="stylus" scoped>
+@import "~common/stylus/variable"
 .slider
-  overflow: hidden;
-  width: 100%;
-  height: 0;
-  padding-bottom: 40%;
-  background: #eee;
-  img
-    width 100%
+  min-height 1px
+  .slider-group
+    position relative
+    overflow hidden
+    white-space nowrap
+    .slider-item
+      float left
+      box-sizing border-box
+      overflow hidden
+      text-align center
+      a
+        display block
+        width 100%
+        overflow hidden
+        text-decoration none
+        img
+          display block
+          width 100%
 </style>
