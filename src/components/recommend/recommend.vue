@@ -9,6 +9,18 @@
         </div>
       </slider>
     </div>
+    <div class="recommend-list">
+      <h1 class="list-title">热门歌单推荐</h1>
+      <ul>
+        <li v-for='item of discList' :key='item.id'>
+          <img width="60" height="60" :src='item.coverImgUrl' alt='item.coverImgId_str'>
+          <div class="text">
+            <h2 class="name">{{item.name}}</h2>
+            <p class="desc">{{item.copywriter}}</p>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -17,7 +29,8 @@ import Slider from 'base/slider/slider'
 export default {
   data() {
     return {
-      list: []
+      list: [],
+      discList: []
     }
   },
   methods: {
@@ -28,10 +41,20 @@ export default {
             this.list = res.data.banners
           }
         })
+    },
+    getMusic() {
+      this.axios.get('/api//top/playlist/highquality?limit=30')
+        .then(res => {
+          if (res.status === 200) {
+            this.discList = res.data.playlists
+            console.log(res.data.playlists)
+          }
+        })
     }
   },
   created() {
     this.get()
+    this.getMusic()
   },
   components: {
     Slider

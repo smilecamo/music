@@ -104,6 +104,10 @@ export default {
         this.slider.next()
       }, this.interval)
     }
+  },
+  // 销毁组件时取消定时器
+  destroyed() {
+    clearTimeout(this.timer)
   }
 }
 </script>
