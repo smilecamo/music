@@ -9,6 +9,7 @@ import router from './router/index.js'
 import 'common/stylus/index.styl'
 require('swiper/dist/css/swiper.css')
 Vue.use(VueAwesomeSwiper)
+// 图片懒加载
 Vue.use(VueLazyload, {
   preLoad: 1.3,
   error: require('components/m-header/logo@2x.png'),

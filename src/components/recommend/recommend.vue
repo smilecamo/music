@@ -1,27 +1,33 @@
 <template>
-  <div class="recommend">
-    <div v-if="list.length" class="slider-wrapper">
-      <slider1></slider1>
+  <scroll class="recommend">
+    <div>
+      <div v-if="list.length" class="slider-wrapper">
+        <slider1></slider1>
+      </div>
+      <div class="recommend-list">
+        <h1 class="list-title">热门歌单推荐</h1>
+        <ul class="list-item">
+          <li v-for='item of discList' :key='item.id'>
+            <img class="icon" width="60" height="60" v-lazy='item.coverImgUrl' alt='item.coverImgId_str'>
+            <div class="text">
+              <h2 class="name">{{item.name}}</h2>
+              <p class="desc">{{item.copywriter}}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="recommend-list">
-      <h1 class="list-title">热门歌单推荐</h1>
-      <ul class="list-item">
-        <li v-for='item of discList' :key='item.id'>
-          <img class="icon" width="60" height="60" v-lazy='item.coverImgUrl' alt='item.coverImgId_str'>
-          <div class="text">
-            <h2 class="name">{{item.name}}</h2>
-            <p class="desc">{{item.copywriter}}</p>
-          </div>
-        </li>
-        
-      </ul>
+    <div class="loading-center" v-show='!discList.length'>
+      <loading></loading>
     </div>
-  </div>
+  </scroll>
 </template>
 
 <script>
 // import Slider from 'base/slider/slider'
+import Scroll from 'base/scroll/scroll'
 import Slider1 from 'base/slider/slider1'
+import Loading from 'base/loading/loading'
 export default {
   data() {
     return {
@@ -53,7 +59,9 @@ export default {
     this.getMusic()
   },
   components: {
-    Slider1
+    Slider1,
+    Scroll,
+    Loading
   }
 }
 </script>
@@ -98,4 +106,9 @@ export default {
               color: $color-text
             .desc
               color: $color-text-d
+    .loading-center
+      position absolute
+      width 100%
+      top 50%
+      transform translateY(-50%)
 </style>
