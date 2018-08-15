@@ -1,31 +1,27 @@
 <template>
   <div class="recommend">
     <div v-if="list.length" class="slider-wrapper">
-      <slider>
-        <div v-for="item of list" :key="item.url">
-          <a>
-            <img :src="item.picUrl" alt="banner">
-          </a>
-        </div>
-      </slider>
+      <slider1></slider1>
     </div>
     <div class="recommend-list">
       <h1 class="list-title">热门歌单推荐</h1>
-      <ul>
+      <ul class="list-item">
         <li v-for='item of discList' :key='item.id'>
-          <img width="60" height="60" :src='item.coverImgUrl' alt='item.coverImgId_str'>
+          <img class="icon" width="60" height="60" v-lazy='item.coverImgUrl' alt='item.coverImgId_str'>
           <div class="text">
             <h2 class="name">{{item.name}}</h2>
             <p class="desc">{{item.copywriter}}</p>
           </div>
         </li>
+        
       </ul>
     </div>
   </div>
 </template>
 
 <script>
-import Slider from 'base/slider/slider'
+// import Slider from 'base/slider/slider'
+import Slider1 from 'base/slider/slider1'
 export default {
   data() {
     return {
@@ -57,7 +53,7 @@ export default {
     this.getMusic()
   },
   components: {
-    Slider
+    Slider1
   }
 }
 </script>
@@ -73,4 +69,33 @@ export default {
       position: relative
       width: 100%
       overflow: hidden
+    .recommend-list
+      h1
+        width 100%
+        height 44px
+        line-height 44px
+        text-align center
+        font-size: $font-size-large
+        color: $color-theme
+      .list-item
+        li
+          display flex
+          box-sizing border-box
+          align-items center
+          padding 0 20px 20px 20px
+          .icon
+            padding 0 15px 0 0
+          .text
+            display flex
+            flex-direction: column
+            justify-content: center
+            flex: 1
+            line-height: 20px
+            overflow: hidden
+            font-size: $font-size-medium
+            .name
+              margin-bottom: 10px
+              color: $color-text
+            .desc
+              color: $color-text-d
 </style>
