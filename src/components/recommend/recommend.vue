@@ -1,26 +1,28 @@
 <template>
-  <scroll class="recommend">
-    <div>
-      <div v-if="list.length" class="slider-wrapper">
-        <slider1></slider1>
+  <div class="recommend">
+    <scroll class="recommend-content">
+      <div>
+        <div v-if="list.length" class="slider-wrapper">
+          <slider1></slider1>
+        </div>
+        <div class="recommend-list">
+          <h1 class="list-title">热门歌单推荐</h1>
+          <ul class="list-item">
+            <li v-for='item of discList' :key='item.id'>
+              <img class="icon" width="60" height="60" v-lazy='item.coverImgUrl' alt='item.coverImgId_str'>
+              <div class="text">
+                <h2 class="name">{{item.name}}</h2>
+                <p class="desc">{{item.copywriter}}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="recommend-list">
-        <h1 class="list-title">热门歌单推荐</h1>
-        <ul class="list-item">
-          <li v-for='item of discList' :key='item.id'>
-            <img class="icon" width="60" height="60" v-lazy='item.coverImgUrl' alt='item.coverImgId_str'>
-            <div class="text">
-              <h2 class="name">{{item.name}}</h2>
-              <p class="desc">{{item.copywriter}}</p>
-            </div>
-          </li>
-        </ul>
+      <div class="loading-center" v-show='!discList.length'>
+        <loading></loading>
       </div>
-    </div>
-    <div class="loading-center" v-show='!discList.length'>
-      <loading></loading>
-    </div>
-  </scroll>
+    </scroll>
+  </div>
 </template>
 
 <script>
@@ -73,39 +75,42 @@ export default {
     width: 100%
     top: 88px
     bottom: 0
-    .slider-wrapper
-      position: relative
-      width: 100%
+    .recommend-content
+      height: 100%
       overflow: hidden
-    .recommend-list
-      h1
-        width 100%
-        height 44px
-        line-height 44px
-        text-align center
-        font-size: $font-size-large
-        color: $color-theme
-      .list-item
-        li
-          display flex
-          box-sizing border-box
-          align-items center
-          padding 0 20px 20px 20px
-          .icon
-            padding 0 15px 0 0
-          .text
+      .slider-wrapper
+        position: relative
+        width: 100%
+        overflow: hidden
+      .recommend-list
+        h1
+          width 100%
+          height 44px
+          line-height 44px
+          text-align center
+          font-size: $font-size-large
+          color: $color-theme
+        .list-item
+          li
             display flex
-            flex-direction: column
-            justify-content: center
-            flex: 1
-            line-height: 20px
-            overflow: hidden
-            font-size: $font-size-medium
-            .name
-              margin-bottom: 10px
-              color: $color-text
-            .desc
-              color: $color-text-d
+            box-sizing border-box
+            align-items center
+            padding 0 20px 20px 20px
+            .icon
+              padding 0 15px 0 0
+            .text
+              display flex
+              flex-direction: column
+              justify-content: center
+              flex: 1
+              line-height: 20px
+              overflow: hidden
+              font-size: $font-size-medium
+              .name
+                margin-bottom: 10px
+                color: $color-text
+              .desc
+                color: $color-text-d
     .loading-center
       position absolute
       width 100%
