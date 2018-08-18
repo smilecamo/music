@@ -2,7 +2,6 @@
   <transition name="slide">
     <div class="song-detail">
       <scroll class="song-scroll">
-        <div class="song">
           <ul>
             <div class="song-img">
               <img :src="song" alt="">
@@ -14,7 +13,6 @@
               </div>
             </li>
           </ul>
-        </div>
       </scroll>
       <div class="loading-center" v-show='!songs.length'>
         <loading></loading>
@@ -65,12 +63,14 @@ export default {
   left 0
   right 0
   bottom 0
+  height 100%
+  overflow hidden
   background $color-background
   .song-scroll
-    overflow hidden
     height 100%
     .song
       width 100%
+      height 100%
       ul
         height 100%
         .song-img
@@ -81,6 +81,7 @@ export default {
             height 100%
         .song-detail
           margin-top 300px
+          height 100%
           display flex
           flex-direction: column
           img
