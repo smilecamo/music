@@ -7,7 +7,8 @@
     <div class="bg-image" :style='bgStyle' ref="bgImage">
       <div class="filter"></div>
     </div>
-    <scroll :data='songs' class="list" ref="list">
+    <div class="bg-layer" ref="layer"></div>
+    <scroll @scroll='scroll' :probe-type='probeType' :listen-scroll='listtenScroll' :data='songs' class="list" ref="list">
       <div class="song-list-wrapper">
         <song-list :songs='songs'></song-list>
       </div>
@@ -17,7 +18,7 @@
 
 <script>
 import Scroll from 'base/scroll/scroll'
-import  SongList from 'base/song-list/song-list'
+import SongList from 'base/song-list/song-list'
 export default {
   props: {
     bgImage: {
@@ -38,14 +39,36 @@ export default {
       return `background-image:url(${this.bgImage})`
     }
   },
+  // create() {
+  //   this.probeType = 3
+  //   this.listtenScroll = true
+  // },
+  data() {
+    return {
+      scrollY: 0,
+      probeType: 3,
+      listtenScroll: true
+    }
+  },
   mounted() {
     this.$refs.list.$el.style.top = `${this.$refs.bgImage.clientHeight}px`
+  },
+  methods: {
+    scroll(pos) {
+      this.scrollY = pos.y
+    }
+  },
+  watch: {
+    scrollY(newY) {
+      this.$refs.layer.style[`transform`] = `translate3d(0,${newY}px,0)`
+      this.$refs.layer.style[`webkitTransform`] = `translate3d(0,${newY}px,0)`
+    }
   },
   components: {
     Scroll,
     SongList
   }
-};
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -65,7 +88,7 @@ export default {
     position: absolute;
     top: 0;
     left: 6px;
-    z-index: 51;
+    z-index: 50;
 
     .icon-back {
       display: block;
@@ -79,7 +102,7 @@ export default {
     position: absolute;
     top: 0;
     left: 10%;
-    z-index: 51;
+    z-index: 50;
     width: 80%;
     no-wrap();
     text-align: center;
@@ -95,7 +118,6 @@ export default {
     padding-top: 70%;
     transform-origin: top;
     background-size: cover;
-    z-index 50
 
     .play-wrapper {
       position: absolute;
@@ -165,5 +187,3 @@ export default {
   }
 }
 </style>
-
-
