@@ -2,7 +2,7 @@
   <swiper :options="swiperOption" :not-next-tick="notNextTick" class="swiper-container">
       <swiper-slide class="swiper-item" v-for="item of imgList" :key="item.picUrl">
         <a :href="item.url">
-          <img :src="item.picUrl" class="swiper-img">
+          <img v-lazy="item.picUrl" class="swiper-img">
         </a>
       </swiper-slide>
     <div class="swiper-pagination"  slot="pagination"></div>
